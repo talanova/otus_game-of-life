@@ -2,12 +2,12 @@ var appEl = document.getElementById("app");
 var initEl = document.getElementById("init");
 var timer;
 
-let field = [];
-let nrow;
-let ncolumn;
-let period;
+var field = [];
+var nrow;
+var ncolumn;
+var period;
 
-function Init()
+function init()
 {
 	nrow = document.getElementById("nrow").value;
 	ncolumn = document.getElementById("ncolumn").value;
@@ -35,7 +35,7 @@ function Init()
 	return submit;
 }
 
-function DrawField(field, htmlElement) 
+function drawField(field, htmlElement) 
 {
 	const cellIterator = (cell, columnIndex) => 
 	{
@@ -51,9 +51,9 @@ function DrawField(field, htmlElement)
 	htmlElement.innerHTML = table;
 }
 
-function InitCell(row, column, field)
+function initCell(row, column, field)
 {
-	let i = Math.random() * 10;
+	var i = Math.random() * 10;
 	if (i > 5)
 	{
 		field[row][column] = 1;
@@ -64,7 +64,7 @@ function InitCell(row, column, field)
 	}
 }
 
-function GetCellState(row, column, field)
+function getCellState(row, column, field)
 {
 	if (field[row] === undefined)
 	{
@@ -79,27 +79,27 @@ function GetCellState(row, column, field)
 	return field[row][column];
 }
 
-function GetNumOfAliveNeighbours(row, column, field) 
+function getNumOfAliveNeighbours(row, column, field) 
 {
 	var neighbours = 0;
 
 	for(var j = column - 1; j <= column + 1; j++)
 	{
-		neighbours += GetCellState(row - 1, j, field);
+		neighbours += getCellState(row - 1, j, field);
 	}
 
 	for(var j = column - 1; j <= column + 1; j++)
 	{
-		neighbours += GetCellState(row + 1, j, field);
+		neighbours += getCellState(row + 1, j, field);
 	}
 
-	neighbours += GetCellState(row, column - 1, field);
-	neighbours += GetCellState(row, column + 1, field);
+	neighbours += getCellState(row, column - 1, field);
+	neighbours += getCellState(row, column + 1, field);
 
 	return neighbours;
 }
 
-function GetNewCellState(currentCellState, numOfAliveNeighbours)
+function getNewCellState(currentCellState, numOfAliveNeighbours)
 {
 	if (numOfAliveNeighbours == 3)
 	{
@@ -119,7 +119,7 @@ function GetNewCellState(currentCellState, numOfAliveNeighbours)
 	return 0;
 }
 
-function IsAnyoneAlive(field)
+function isAnyoneAlive(field)
 {
 	for (var i = 0; i < nrow; i++)
 	{
@@ -134,23 +134,23 @@ function IsAnyoneAlive(field)
 	return false;
 }
 
-function GetNewFieldState(field)
+function getNewFieldState(field)
 {
 	return field.map((row, rowIndex) => 
 		{
 			return row.map((cell, cellIndex) =>
 			{
-				var aliveNeighbours = GetNumOfAliveNeighbours(rowIndex, cellIndex, field);
-				var currentState = GetCellState(rowIndex, cellIndex, field);
-				var newState = GetNewCellState(currentState, aliveNeighbours);
+				var aliveNeighbours = getNumOfAliveNeighbours(rowIndex, cellIndex, field);
+				var currentState = getCellState(rowIndex, cellIndex, field);
+				var newState = getNewCellState(currentState, aliveNeighbours);
 				return newState;
 			})
 		});
 }
 
-function StartGame()
+function startGame()
 {
-	if (Init() == false)
+	if (init() == false)
 	{
 		return;
 	}
@@ -165,20 +165,20 @@ function StartGame()
 		field[i] = new Array(ncolumn);
 		for (var j = 0; j < ncolumn; j++)
 		{
-			InitCell(i, j, field);
+			initCell(i, j, field);
 		}
 	}
 
 	initEl.innerHTML = '';
 
-	DrawField(field, appEl);
+	drawField(field, appEl);
 
 	timer = setInterval(() => 
 	{
 		console.log("play!");
-		field = GetNewFieldState(field);
-		DrawField(field, appEl);
-		if (IsAnyoneAlive(field) == false) 
+		field = getNewFieldState(field);
+		drawField(field, appEl);
+		if (isAnyoneAlive(field) == false) 
 		{
 			clearInterval(timer);
 			console.log("Every body died!");
