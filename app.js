@@ -12,24 +12,24 @@ function init()
 	nrow = document.getElementById("nrow").value;
 	ncolumn = document.getElementById("ncolumn").value;
 	period = document.getElementById("period").value;
-	submit = "true";
+	var submit = true;
 
 	if (isNaN(nrow) || nrow < 1)
 	{
 		console.log("Количество строк должно быть от 1");
-		submit = "false";
+		submit = false;
 	}
 
 	if (isNaN(ncolumn) || ncolumn < 1)
 	{
 		console.log("Количество столбцов должно быть от 1");
-		submit = "false";
+		submit = false;
 	}
 
 	if (isNaN(period) || period < 1)
 	{
 		console.log("Период должно быть от 1 сек");
-		submit = "false";
+		submit = false;
 	}
 	
 	return submit;
@@ -155,7 +155,7 @@ function startGame()
 		return;
 	}
 
-	console.log("nrow =" +  nrow);
+	console.log("nrow = " +  nrow);
 	console.log("ncolumn = " + ncolumn);
 	console.log("period = " + period + " in sec");
 
